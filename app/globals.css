@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-slate-950 text-white antialiased; font-feature-settings: "rlig" 1, "calt" 1; }
+  ::selection { @apply bg-cricket-500/30 text-cricket-100; }
+}
+
+@layer components {
+  .glass-panel { @apply bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl; }
+  .stat-card { @apply glass-panel p-6 hover:border-cricket-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-cricket-500/10; }
+  .gradient-text { @apply bg-gradient-to-r from-cricket-400 to-blue-400 bg-clip-text text-transparent; }
+  .form-above { @apply text-emerald-400 bg-emerald-500/10 border border-emerald-500/20; }
+  .form-below { @apply text-red-400 bg-red-500/10 border border-red-500/20; }
+  .form-average { @apply text-yellow-400 bg-yellow-500/10 border border-yellow-500/20; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}
