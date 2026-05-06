@@ -1,117 +1,159 @@
 # Stumped! by StatsXI
 
-Advanced cricket analytics web app built with Next.js for statistical and probability-based performance analysis across batting, bowling, live matches, and tournaments.
+> Advanced cricket analytics platform with real-time live match data, statistical modeling, and interactive player comparisons.
 
-## Repo Description (GitHub one-liner)
+🌐 **Live Demo:** [stumped-stats-xi-24f-0506.vercel.app](https://stumped-stats-xi-24f-0506.vercel.app)
 
-Stumped! by StatsXI is a Next.js cricket analytics platform with descriptive statistics, regression, correlation, confidence intervals, outlier detection, live match integration, and player/tournament analysis.
+---
+
+## What is this?
+
+Stumped! by StatsXI is a full-stack cricket analytics web app built with **Next.js 14**. It combines historical CSV datasets (batting, bowling, tournaments) with live match data from the **CricketData API** to deliver statistical insights across T20, ODI, and Test formats.
+
+---
 
 ## Features
 
-- Multi-format analytics: `T20`, `ODI`, `TEST`
-- Batting and bowling mode switching
-- Descriptive statistics, probability/distribution analysis, and regression
-- Dynamic correlation matrix (updates by selected format and kind)
-- 95% confidence intervals and IQR outlier detection
-- Player list and detailed player profile pages
-- Form tracker (career vs live strike-rate comparison)
-- Live matches and recent matches (CricAPI integration)
-- Tournaments dashboard with summary cards and charts
-- Smooth transitions and dashboard welcome splash
+- **Multi-format support** — T20, ODI, and Test for both batting and bowling
+- **Descriptive statistics** — Mean, median, standard deviation, skewness, kurtosis, Q1/Q3
+- **Regression modeling** — Linear regression with R² score and prediction equation
+- **Probability distributions** — Histogram + normal curve overlay per metric
+- **95% Confidence intervals** — Computed per metric with margin of error
+- **Outlier detection** — IQR method with lower/upper bounds
+- **Correlation matrix** — Pearson correlation, updates dynamically per format
+- **Player profiles** — Z-score based radar charts and stat summaries
+- **Player form tracker** — Compares career strike rate vs live innings performance
+- **Live matches** — Real-time scores via CricketData API, auto-refreshes every 2 minutes
+- **Tournaments dashboard** — KPI cards, top winners chart, format distribution pie
+- **Smooth UX** — Framer Motion transitions, loading states, welcome splash
+
+---
 
 ## Tech Stack
 
-- Next.js 14 (App Router)
-- React + Tailwind CSS
-- Recharts (charts)
-- Framer Motion (animations)
-- Lucide React (icons)
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| UI | React + Tailwind CSS |
+| Charts | Recharts |
+| Animations | Framer Motion |
+| Icons | Lucide React |
+| Data | Local CSV + CricketData API |
+
+---
 
 ## Project Structure
 
-- `app/` - route pages and API routes
-- `components/` - reusable UI components/charts
-- `lib/` - dataset loading, normalization, and statistics helpers
-- `data/` - CSV datasets (batting, bowling, tournaments)
-- `public/` - static assets (logo, etc.)
+```
+stumped-statsxi/
+├── app/
+│   ├── page.js                  # Dashboard
+│   ├── analysis/page.js         # Deep analysis (tabs)
+│   ├── players/page.js          # Players list
+│   ├── players/[slug]/page.js   # Player profile
+│   ├── form-tracker/page.js     # Form tracker
+│   ├── live/page.js             # Live matches
+│   ├── tournaments/page.js      # Tournaments
+│   └── api/                     # API routes (stats, live, players, etc.)
+├── components/                  # Reusable chart and UI components
+├── lib/
+│   ├── dataProcessor.js         # CSV schema normalization
+│   ├── datasets.js              # Dataset loading and caching
+│   └── statistics.js            # Math helpers (mean, std, regression, IQR)
+├── data/                        # CSV datasets (batting, bowling, tournaments)
+└── public/                      # Static assets (logo)
+```
+
+---
 
 ## API Endpoints
 
-- `GET /api/stats` - descriptive, correlation, regression, distribution, confidence intervals, outliers
-- `GET /api/live` - live matches, recent matches, API status metadata
-- `GET /api/player-form` - form tracking (career vs live)
-- `GET /api/players` - players listing by kind/format
-- `GET /api/players/[slug]` - single player profile
-- `GET /api/tournaments` - tournaments rows + aggregated summary
-- `POST /api/predict` - prediction helper endpoint
-- `POST /api/outliers` - outlier helper endpoint
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/stats` | GET | Descriptive stats, regression, distribution, CI, outliers, correlation |
+| `/api/live` | GET | Live and recent matches + API status |
+| `/api/player-form` | GET | Career vs live form comparison |
+| `/api/players` | GET | Player list by kind and format |
+| `/api/players/[slug]` | GET | Single player profile |
+| `/api/tournaments` | GET | Tournament rows + aggregated summary |
+| `/api/predict` | POST | Regression prediction |
+| `/api/outliers` | POST | IQR outlier details for a metric |
 
-## Getting Started (Local)
+---
 
-### 1) Install dependencies
+## Getting Started Locally
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/stumped-statsxi.git
+cd stumped-statsxi
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2) Configure environment
+### 3. Set up environment variables
 
-Create `.env.local` in project root:
+Create a `.env.local` file in the root:
 
 ```env
-CRICKETDATA_API_KEY=your_cricapi_key_here
+CRICKETDATA_API_KEY=your_api_key_here
 ```
 
-### 3) Run development server
+Get a free API key from [cricketdata.org](https://cricketdata.org).
+
+### 4. Run the development server
 
 ```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000).
 
-### 4) Production build check
+---
+
+## Deployment
+
+This project is deployed on **Vercel**.
+
+To deploy your own:
+
+1. Push the repo to GitHub
+2. Import it in [vercel.com](https://vercel.com)
+3. Add the environment variable `CRICKETDATA_API_KEY` in project settings
+4. Deploy
+
+Or via CLI:
 
 ```bash
-npm run build
-npm start
+vercel env add CRICKETDATA_API_KEY production
+vercel --prod
 ```
 
-## Deployment (Vercel)
+---
 
-1. Push project to GitHub
-2. Import repository in Vercel
-3. Add environment variable:
-   - `CRICKETDATA_API_KEY`
-4. Deploy
-5. Verify:
-   - `/api/live` returns `"configured": true`
-   - Format switching and analysis pages work correctly
+## Screenshots
+
+> Dashboard with live stats, regression plot, and distribution chart
+
+> Player profile with radar chart and z-score analysis
+
+> Live matches with real-time scores
+
+---
 
 ## Notes
 
-- Live API data depends on CricAPI availability and active matches.
-- In `npm run dev`, navigation can feel slower than production due to dev tooling overhead.
+- Live match data depends on CricketData API availability and active matches
+- Some Test format regressions may show weak results due to missing strike-rate values in datasets
+- Dev mode (`npm run dev`) is slower than production due to HMR overhead
 
-## Viva and Technical Docs
-
-- `VIVA_GUIDE.md` - page-wise formulas and chart explanation
-- `TECHNICAL_BUILD_GUIDE.md` - architecture and implementation details
+---
 
 ## License
 
-For academic/project use.
-# Stumped! | StatsXI - Cricket Analytics
-
-Advanced cricket analytics with hybrid data (Kaggle + CricketData API).
-
-## Premium Feature: Player Form Comparison
-Merges Kaggle career statistics with real-time CricketData API match data.
-
-## Setup
-1. Copy `.env.local.example` to `.env.local` and add API key
-2. Place `twb.csv` in `/data/`
-3. Add `logo.png` in `/public/`
-4. `npm install` then `npm run dev`
-
-## Deploy: `vercel --prod`
+For academic and project use only.
