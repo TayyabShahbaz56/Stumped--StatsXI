@@ -145,7 +145,8 @@ vercel --prod
 <img width="1443" height="749" alt="image" src="https://github.com/user-attachments/assets/c883a538-35ea-4334-b4ab-bdf4dd3f1784" />
 
 > Live matches with real-time scores
-<img width="1503" height="811" alt="image" src="https://github.com/user-attachments/assets/ee3276a9-98b6-4a56-ad74-a51ae82062a6" />
+<img width="1438" height="745" alt="image" src="https://github.com/user-attachments/assets/317fda22-95b2-4962-8844-eddfb5ead105" />
+
 
 ---
 
