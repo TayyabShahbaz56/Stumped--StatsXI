@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import { Trophy, Users, Activity, Menu, X, TrendingUp } from 'lucide-react'
+import { Trophy, Users, Activity, Menu, X, TrendingUp, FlaskConical } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: '/players', label: 'Players', icon: Users },
   { href: '/form-tracker', label: 'Form Tracker', icon: TrendingUp },
   { href: '/tournaments', label: 'Tournaments', icon: Trophy },
+  { href: '/advanced', label: 'Advanced Stats', icon: FlaskConical },
 ]
 
 export default function TeamHeader() {
