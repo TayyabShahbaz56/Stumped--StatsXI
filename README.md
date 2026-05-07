@@ -139,10 +139,21 @@ vercel --prod
 ## Screenshots
 
 > Dashboard with live stats, regression plot, and distribution chart
+<<<<<<< HEAD
 
 > Player profile with radar chart and z-score analysis
 
 > Live matches with real-time scores
+=======
+<img width="1512" height="882" alt="image" src="https://github.com/user-attachments/assets/6ff8985d-68f4-4328-b7e9-0700119a77d4" />
+
+> Player profile with radar chart and z-score analysis
+<img width="1443" height="749" alt="image" src="https://github.com/user-attachments/assets/c883a538-35ea-4334-b4ab-bdf4dd3f1784" />
+
+> Live matches with real-time scores
+<img width="1438" height="745" alt="image" src="https://github.com/user-attachments/assets/317fda22-95b2-4962-8844-eddfb5ead105" />
+
+>>>>>>> 3258fed692fc58a5204bda1646510167b1716620
 
 ---
 
