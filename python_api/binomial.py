@@ -1,84 +1,68 @@
 """
-Binomial Distribution Analysis
-================================
-Models the probability of a batsman hitting exactly k boundaries (4s or 6s)
-in n balls, given a fixed probability p of hitting a boundary per ball.
-
-Uses Binomial PMF: P(X=k) = C(n,k) * p^k * (1-p)^(n-k)
+Binomial Distribution — Pure Python
+P(X=k) = C(n,k) * p^k * (1-p)^(n-k)
+Models probability of hitting exactly k boundaries in n balls.
 """
-
-import numpy as np
-from scipy.stats import binom
-from math import comb
+import math
+from stats_utils import binomial_pmf, normal_pdf
 
 
 def compute_binomial(n: int, p: float):
-    """
-    Compute Binomial distribution probabilities for k = 0 to n.
-
-    Parameters:
-        n : number of balls faced (trials)
-        p : probability of hitting a boundary per ball (success probability)
-
-    Returns dict with:
-        - n, p       : parameters used
-        - bars       : list of {k, probability, cumulative} for chart
-        - mean       : expected boundaries = n*p
-        - variance   : n*p*(1-p)
-        - std        : standard deviation
-        - mode       : most likely k
-        - normal_approx : normal approximation curve points (for overlay)
-    """
     n = max(1, int(n))
     p = max(0.001, min(0.999, float(p)))
 
-    k_values = np.arange(0, n + 1)
+    mean_val = n * p
+    var_val  = n * p * (1 - p)
+    std_val  = math.sqrt(var_val)
 
-    # PMF and CDF
-    pmf = binom.pmf(k_values, n=n, p=p)
-    cdf = binom.cdf(k_values, n=n, p=p)
+    pmf = [binomial_pmf(k, n, p) for k in range(n + 1)]
+    cdf = []
+    running = 0
+    for prob in pmf:
+        running += prob
+        cdf.append(min(running, 1.0))
 
+    mode = pmf.index(max(pmf))
+
+    # Only include bars with meaningful probability
     bars = [
         {
-            "k": int(k),
-            "probability": round(float(prob), 6),
-            "cumulative": round(float(c), 6),
-            "label": f"k={k}"
+            "k":           k,
+            "probability": round(pmf[k], 6),
+            "cumulative":  round(cdf[k], 6),
+            "label":       f"k={k}"
         }
-        for k, prob, c in zip(k_values, pmf, cdf)
-        if float(prob) > 0.0001  # skip near-zero tails for cleaner chart
+        for k in range(n + 1)
+        if pmf[k] > 0.0001
     ]
 
-    mean = n * p
-    variance = n * p * (1 - p)
-    std = np.sqrt(variance)
-    mode = int(k_values[np.argmax(pmf)])
-
-    # Normal approximation curve (valid when n*p >= 5 and n*(1-p) >= 5)
+    # Normal approximation (only when valid)
     normal_approx = []
-    if n * p >= 5 and n * (1 - p) >= 5:
-        from scipy.stats import norm
-        x_fine = np.linspace(max(0, mean - 4 * std), min(n, mean + 4 * std), 80)
-        y_fine = norm.pdf(x_fine, loc=mean, scale=std)
+    normal_valid = (n * p >= 5) and (n * (1 - p) >= 5)
+    if normal_valid and std_val > 0:
+        steps = 80
+        x_min = max(0, mean_val - 4 * std_val)
+        x_max = min(n, mean_val + 4 * std_val)
+        step  = (x_max - x_min) / steps
         normal_approx = [
-            {"x": round(float(x), 3), "y": round(float(y), 6)}
-            for x, y in zip(x_fine, y_fine)
+            {"x": round(x_min + i * step, 3), "y": round(normal_pdf(x_min + i * step, mean_val, std_val), 6)}
+            for i in range(steps + 1)
         ]
 
     return {
-        "n": n,
-        "p": round(p, 4),
-        "bars": bars,
-        "mean": round(float(mean), 4),
-        "variance": round(float(variance), 4),
-        "std": round(float(std), 4),
-        "mode": mode,
+        "n":            n,
+        "p":            round(p, 4),
+        "bars":         bars,
+        "mean":         round(mean_val, 4),
+        "variance":     round(var_val, 4),
+        "std":          round(std_val, 4),
+        "mode":         mode,
         "normal_approx": normal_approx,
-        "normal_valid": n * p >= 5 and n * (1 - p) >= 5,
-        "formula": f"P(X=k) = C({n},k) × {p:.3f}^k × {1-p:.3f}^({n}-k)",
+        "normal_valid": normal_valid,
+        "formula":      f"P(X=k) = C({n},k) × {p:.3f}^k × {1-p:.3f}^({n}-k)",
         "interpretation": (
-            f"In {n} balls with a {p:.1%} boundary probability, "
-            f"the expected number of boundaries is {mean:.1f} (±{std:.1f}). "
-            f"The most likely outcome is {mode} boundary/boundaries."
+            f"In {n} balls with {p:.1%} boundary probability, "
+            f"expected boundaries = {mean_val:.1f} (±{std_val:.1f}). "
+            f"Most likely outcome: {mode} boundary/boundaries."
         )
     }
